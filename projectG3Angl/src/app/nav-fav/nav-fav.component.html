@@ -1,0 +1,58 @@
+<p>nav-fav works!</p>
+
+<button (click)="getFavList()">Favourite</button>
+<!-- 
+<div>
+
+   <ul>
+    <li *ngFor="let a of myfavlist">
+        <b> {{a.quizs && a.quizs.quizname}} </b>           
+     </li>
+   </ul>
+</div> -->
+
+<div class="container">
+   <table class="table"> 
+     <thead>
+       <tr>
+         <th>Quiz Name</th>
+         <th></th>
+       </tr>
+     </thead>
+     <tbody>
+       <tr *ngFor="let a of myfavlist">
+         <td>{{a.quizs && a.quizs.quizname}}</td>
+         <!-- <td><button mat-icon-button (click)="toggleSelected()">
+            <mat-icon
+            *ngIf="selected"
+            aria-label="Example icon-button with a heart icon">
+            favorite
+          </mat-icon>
+          <mat-icon
+          *ngIf="!selected"
+          aria-label="Example icon-button with a heart icon">
+          favorite_border
+        </mat-icon>
+        
+        </button></td> -->
+       </tr>      
+     </tbody>
+   </table>
+   
+ </div>
+
+
+ <div class="card-group">
+   <div class="card" *ngFor="let a of myfavlist">
+     <div class="card-body">
+       <h5 class="card-title">{{a.quizs && a.quizs.quizname}}</h5>
+       <a class="btn btn-primary" (click)="removeFromFav()">Remove</a>
+     </div>
+   </div>
+   <div class="card" *ngFor="let a of myfavlist">
+      <div class="card-body">
+        <h5 class="card-title">{{a.quizs && a.quizs.quizname}}</h5>
+        <a class="btn btn-primary">Remove</a>
+      </div>
+    </div>
+ </div>
