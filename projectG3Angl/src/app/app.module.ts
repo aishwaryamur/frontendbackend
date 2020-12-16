@@ -12,6 +12,10 @@ import { StatusComponent } from './status/status.component';
 import { McqComponent } from './mcq/mcq.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { AddtoFavComponent } from './addto-fav/addto-fav.component';
+import { ChartsComponent } from './charts/charts.component';
+import { ChartsModule } from 'ng2-charts';
+
+// import { SearchQuizeComponent } from './search-quize/search-quize.component';
 
 // For MDB Angular Free
 
@@ -20,7 +24,7 @@ import { AddtoFavComponent } from './addto-fav/addto-fav.component';
     AppComponent,
     NavFavComponent,
     StatusComponent,
-    McqComponent,AddtoFavComponent
+    McqComponent,AddtoFavComponent, ChartsComponent, 
   ],
   imports: [
     BrowserModule,
@@ -30,6 +34,7 @@ import { AddtoFavComponent } from './addto-fav/addto-fav.component';
     BrowserAnimationsModule,
     HttpClientModule,
     AngularMaterialModule,
+    ChartsModule
    
   ],
   providers: [],

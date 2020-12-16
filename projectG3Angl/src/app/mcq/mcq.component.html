@@ -1,22 +1,17 @@
-<!-- <p *ngFor="let a of que" >
-      <li *ngIf="mystatus" style="color: red;" >{{a.questions}}</li>
-      
-  </p> -->
-
-<!-- <button (click)="statusfun()">click</button> -->
-<!-- <a (click)="quizlist()">quiz</a> -->
 <button (click)="quizlist()">get</button>
-<!-- <div *ngFor="let a of ques">
-  <li style="color: green;" >{{a.questions}}</li>
-  
-  <li *ngIf="a.status" style="color: red;" >{{a.questions}}</li>
-  <li *ngIf="!a.status" style="color: blue;" >{{a.questions}}</li>
-    
-  (click)="setAnswer(1,question.id,i)"
- </div> -->
-<!-- (click)="toggleSelected()" -->
+<div>
+  <h4>MaxScorer</h4>
+
+  <label
+    ><strong>Name: {{ userName }}</strong></label
+  >
+  <li class="list-group-item">
+    {{ maxScorer }}
+  </li>
+</div>
 
 <div class="container">
+  <p>Time Remaining:{{ hr }}:{{ min }}:{{ sec }}</p>
   <div>
     <h2 class="fav1">Questions</h2>
     <button class="fav2" mat-icon-button (click)="toggleSelected()">
@@ -99,10 +94,10 @@
         >
       </div>
       <div class="radio">
-        <label id="{{ question.id }}11"
+        <label id="{{ qid }}{{ question.id }}11"
           ><input
             type="radio"
-            id="{{ question.id }}1"
+            id="{{ qid }}{{ question.id }}1"
             value="1"
             name="optradio{{ i }}"
             (click)="
@@ -117,10 +112,10 @@
         >
       </div>
       <div class="radio">
-        <label id="{{ question.id }}22"
+        <label id="{{ qid }}{{ question.id }}22"
           ><input
             type="radio"
-            id="{{ question.id }}2"
+            id="{{ qid }}{{ question.id }}2"
             value="2"
             name="optradio{{ i }}"
             (click)="
@@ -135,10 +130,10 @@
         >
       </div>
       <div class="radio">
-        <label id="{{ question.id }}33"
+        <label id="{{ qid }}{{ question.id }}33"
           ><input
             type="radio"
-            id="{{ question.id }}3"
+            id="{{ qid }}{{ question.id }}3"
             value="3"
             name="optradio{{ i }}"
             (click)="
@@ -153,10 +148,10 @@
         >
       </div>
       <div class="radio">
-        <label id="{{ question.id }}44">
+        <label id="{{ qid }}{{ question.id }}44">
           <input
             type="radio"
-            id="{{ question.id }}4"
+            id="{{ qid }}{{ question.id }}4"
             value="3"
             name="optradio{{ i }}"
             (click)="
@@ -183,7 +178,7 @@
         /></label>
       </div>
       <div>
-        <label>{{ question.answer }}</label>
+        <label>Correct Answer:{{ question.answer }}</label>
       </div>
     </li>
     <li
@@ -199,16 +194,21 @@
       <div>
         <input
           type="text"
-          [(ngModel)]="desc"
-          (blur)="onblurdesc(question.id, question.answer)"
+          (blur)="onblurdesc(question.id, question.answer, $event)"
         />
+        <!-- <div>
+          <span *ngIf="disable"> Correct Answer:{{ question.answer }}</span>
+        </div> -->
       </div>
     </li>
   </ul>
 
-  <button type="button" class="btn btn-success">Submit</button>
+  <button type="button" class="btn btn-success" (click)="submitQuiz()">
+    Submit
+  </button>
 
   <!-- <div>
    <h4> Your Score is: {{score}}</h4>
   </div> -->
+  <!-- <h1>{{counter}}</h1> -->
 </div>

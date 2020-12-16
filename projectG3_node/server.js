@@ -5,7 +5,7 @@ const cors = require("cors");
 const app = express();
 
 var corsOptions = {
-  origin: "http://localhost:4200"
+  origin: "http://localhost:4200",
 };
 
 app.use(cors(corsOptions));
@@ -26,7 +26,10 @@ db.sequelize.sync();
 require("./app/routes/tutorial.routes")(app);
 require("./app/routes/fav.routes")(app);
 require("./app/routes/status.routes")(app);
-  
+require("./app/routes/score.routes")(app);
+require("./app/routes/quize.routes")(app);
+require("./app/routes/chart.routes")(app);
+require("./app/routes/timer.routes")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
