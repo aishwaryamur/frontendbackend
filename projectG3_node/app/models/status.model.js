@@ -8,7 +8,7 @@ module.exports = (sequelize, Sequelize) => {
           },
 
           remainingtime: {
-            type: Sequelize.TIME
+            type: Sequelize.INTEGER
           }
     //       ,
       

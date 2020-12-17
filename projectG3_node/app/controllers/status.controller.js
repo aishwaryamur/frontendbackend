@@ -88,3 +88,16 @@ exports.deleteAll = (req, res) => {
       });
     });
 };
+
+exports.update = (req, res) => {
+  //const id = req.params.id;
+const remainingtime=req.body.remainingtime;
+joinquery =db.sequelize.query('update statuses set remainingtime='+remainingtime, {
+ 
+         }).then((data)=>{
+             console.log(data);
+             res.send(data);
+  
+         });
+         console.log(joinquery);
+};

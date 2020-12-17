@@ -4,7 +4,7 @@ module.exports = (sequelize, Sequelize) => {
         type: Sequelize.STRING
       },
       time: {
-        type: Sequelize.TIME
+        type: Sequelize.INTEGER
       },
       count:{
         type: Sequelize.INTEGER

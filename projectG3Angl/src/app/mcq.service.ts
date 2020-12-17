@@ -5,6 +5,10 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class McqService {
+  clearstatus(delstatus: any) {
+    return this.http.delete('http://localhost:8080/api/status', delstatus);
+  }
+  constructor(private http: HttpClient) {}
   getScore(qid: number) {
     return this.http.get('http://localhost:8080/api/sc/' + qid);
   }
@@ -24,6 +28,7 @@ export class McqService {
   getTimer(qid: number) {
     return this.http.get('http://localhost:8080/api/timer/' + qid);
   }
-
-  constructor(private http: HttpClient) {}
+  updatetimer(counter: any) {
+    return this.http.put('http://localhost:8080/api/status', counter);
+  }
 }

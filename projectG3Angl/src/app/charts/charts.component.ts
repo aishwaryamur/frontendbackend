@@ -1,33 +1,31 @@
 import { Component, OnInit } from '@angular/core';
 import { ChartOptions, ChartType, ChartDataSets } from 'chart.js';
 import { Label } from 'ng2-charts';
+import { ChartService } from '../chart.service';
 
 @Component({
   selector: 'app-charts',
   templateUrl: './charts.component.html',
-  styleUrls: ['./charts.component.scss']
+  styleUrls: ['./charts.component.scss'],
 })
 export class ChartsComponent implements OnInit {
   public barChartOptions: ChartOptions = {
     responsive: true,
   };
-  names:string[]=['2006', '2007', '2008', '2009', '2010', '2011', '2012'];
-  public barChartLabels: Label[] = this.names;
+  quizenames: string[] = [];
+  public barChartLabels: Label[] = this.quizenames;
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
 
-  public barChartData: ChartDataSets[] = [
-    { data: [65, 59, 80, 81, 56, 55, 40], label: 'Series A' }
- 
-  ];
-  constructor() {
+  public barChartData: ChartDataSets[] = [{ data: [], label: 'Series A' }];
+  constructor(private service: ChartService) {
+    this.service.chart().subscribe((res: any) => {
+      console.log(res);
+    });
 
-
-    
-   }
-
-  ngOnInit(): void {
+    this.barChartData[0].data?.push();
   }
 
+  ngOnInit(): void {}
 }

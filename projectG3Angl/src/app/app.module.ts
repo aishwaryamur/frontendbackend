@@ -9,7 +9,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { NavFavComponent } from './nav-fav/nav-fav.component';
 import { FormsModule } from '@angular/forms';
 import { StatusComponent } from './status/status.component';
-import { McqComponent } from './mcq/mcq.component';
+import { McqComponent,FormatTimePipe} from './mcq/mcq.component';
 import { AngularMaterialModule } from './angular-material.module';
 import { AddtoFavComponent } from './addto-fav/addto-fav.component';
 import { ChartsComponent } from './charts/charts.component';
@@ -24,7 +24,10 @@ import { ChartsModule } from 'ng2-charts';
     AppComponent,
     NavFavComponent,
     StatusComponent,
-    McqComponent,AddtoFavComponent, ChartsComponent, 
+    McqComponent,
+    FormatTimePipe ,
+    AddtoFavComponent,
+     ChartsComponent, 
   ],
   imports: [
     BrowserModule,

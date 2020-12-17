@@ -2,7 +2,9 @@ module.exports = (sequelize, Sequelize) => {
     const Score= sequelize.define("score", {
       score: {
         type: Sequelize.INTEGER
-      }
+      },
+        
+  
       // ,  
       // userid :{
       //       type:Sequelize.INTEGER,
