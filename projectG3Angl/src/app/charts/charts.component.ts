@@ -17,14 +17,27 @@ export class ChartsComponent implements OnInit {
   public barChartType: ChartType = 'bar';
   public barChartLegend = true;
   public barChartPlugins = [];
+  chartData: any;
+  countData: number[] = [];
+  public barChartData: ChartDataSets[] = [
+    { data: ([] = this.countData), label: 'Series A' },
+  ];
 
-  public barChartData: ChartDataSets[] = [{ data: [], label: 'Series A' }];
   constructor(private service: ChartService) {
     this.service.chart().subscribe((res: any) => {
-      console.log(res);
+      console.log('res', res);
+      this.chartData = res;
+      this.chart();
     });
 
-    this.barChartData[0].data?.push();
+    // this.barChartData[0].data?.push();
+  }
+
+  chart() {
+    for (let index = 0; index < this.chartData.length; index++) {
+      this.quizenames.push(this.chartData[index].quizname);
+      this.countData.push(this.chartData[index].count);
+    }
   }
 
   ngOnInit(): void {}

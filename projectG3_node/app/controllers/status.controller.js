@@ -71,8 +71,10 @@ exports.findAll = (req, res) => {
 
 // Delete all Tutorials from the database.
 exports.deleteAll = (req, res) => {
-  const quizeId = req.body.quizeId;
-  const userId = req.body.userId;
+  console.log("sdjfgsjhf");
+  const quizeId = req.params.qId;
+  const userId = req.params.uId;
+  //console.log(req.body);
 
   Tutorial.destroy({
     where: { quizeId: quizeId, userId: userId },
@@ -91,13 +93,46 @@ exports.deleteAll = (req, res) => {
 
 exports.update = (req, res) => {
   //const id = req.params.id;
-const remainingtime=req.body.remainingtime;
-joinquery =db.sequelize.query('update statuses set remainingtime='+remainingtime, {
- 
-         }).then((data)=>{
-             console.log(data);
-             res.send(data);
-  
-         });
-         console.log(joinquery);
+  const remainingtime = req.body.remainingtime;
+  const quizeId = req.body.quizeId;
+  const userId = req.body.userId;
+  joinquery = db.sequelize
+    .query(
+      "update statuses set remainingtime=" +
+        remainingtime +
+        " where userId=" +
+        userId +
+        " and quizeId=" +
+        quizeId,
+      {}
+    )
+    .then((data) => {
+      console.log(data);
+      res.send(data);
+    });
+  console.log(joinquery);
 };
+// exports.update = (req, res) => {
+//   const remainingtime=req.body.remainingtime;
+//   const quizeId=req.body.quizeId;
+//   const userId=req.body.userId;
+//   Tutorial.update(req.body, {
+//     where: { quizeId: quizeId, userId:userId }
+//   })
+//     .then(num => {
+//       if (num >= 1) {
+//         res.send({
+//           message: "Tutorial was updated successfully."
+//         });
+//       } else {
+//         res.send({
+//           message: `Cannot update Tutorial with id=${id}. Maybe Tutorial was not found or req.body is empty!`
+//         });
+//       }
+//     })
+//     .catch(err => {
+//       res.status(500).send({
+//         message: "Error updating Tutorial with id=" + id
+//       });
+//     });
+// };

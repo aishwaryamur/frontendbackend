@@ -22,7 +22,7 @@ module.exports = (app) => {
   // router.delete("/:id", tutorials.delete);
 
   // Delete all Tutorials
- router.delete("/", fav.deleteAll);
+ router.delete("/:qId/:uId", fav.deleteAll);
   
   router.put("/", fav.update);
   router.get("/:uid/:qid", fav.findOne);

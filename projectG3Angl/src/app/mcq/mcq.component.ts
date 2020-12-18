@@ -16,31 +16,20 @@ import { IfStmt } from '@angular/compiler';
   styleUrls: ['./mcq.component.scss'],
 })
 export class McqComponent implements OnInit {
-  // hr: number = 0;
-  // min: number = 0;
-  // sec: number = 0;
-  //  interval: any;
-  //   timer: any;
   remainingTime: any = [];
-  // countDown: Subscription = new Subscription();
-  // counter:
-  // Time = {
-  //   hours: 0,
-  //   minutes: 30,
-  // };
-
   countDown: Subscription = new Subscription();
   counter: any;
   tick = 1000;
 
   userName: any;
-  //tick = 1000;
+
   qidid: any;
   ques: any = [];
   mydata: any;
   favData: any;
   uid: number = 2;
   qid: number = 1;
+  userMail: string = 'aishwaryamur@cybage.com';
   que: any = [];
   selected: boolean = false;
   correctans: boolean = false;
@@ -49,6 +38,7 @@ export class McqComponent implements OnInit {
   desc: any;
   maxScorer: any;
   score: number = 0;
+  updateinterval: any;
 
   constructor(
     public service: McqService,
@@ -56,13 +46,17 @@ export class McqComponent implements OnInit {
     private serv: Addfav,
     private router: Router
   ) {
+    //Status service
     this.service.getStatusList(this.uid, this.qid).subscribe((res: any) => {
       this.mydata = res;
       console.log(this.mydata, 'This is status');
       for (let i = 0; i < this.mydata.length; i++) {
-        if (i == this.mydata.length - 1) {
-          console.log(this.mydata[i].remainingtime);
-          // this.timer = this.mydata[i].remainingtime;
+        console.log(this.remainingTime);
+        if (this.mydata[i].userans == this.mydata[i].userqu.answer) {
+          this.score += 1;
+          console.log('myscore', this.score);
+        } else {
+          this.score = this.score;
         }
       }
     });
@@ -86,10 +80,7 @@ export class McqComponent implements OnInit {
     );
   }
 
-  ngOnInit(): void {
-    // this.countDown = timer(0, this.tick).subscribe(() => --this.counter);
-    // throw new Error('Method not implemented.');
-  }
+  ngOnInit(): void {}
   fav = {
     quizid: this.qid,
     userid: this.uid,
@@ -98,55 +89,27 @@ export class McqComponent implements OnInit {
   toggleSelected(): void {
     this.selected = this.serv.favToggel(this.fav);
   }
-  // setTimer(functime: any) {
-  //   //alert("in funct");
-  //   // debugger;
-  //   this.timer = functime;
-  //   console.log('inside set timer', this.timer);
-
-  //   let time: any[] = this.timer.split(':');
-
-  //   if (time[2] == 0) {
-  //     this.sec = 60;
-  //     this.min = parseInt(time[1]) - 1;
-  //     this.hr = parseInt(time[0]);
-  //   } else {
-  //     this.sec = parseInt(time[2]);
-  //     this.min = parseInt(time[1]);
-  //     this.hr = parseInt(time[0]);
-  //   }
-
-  //   this.interval = setInterval(() => {
-  //     if (this.sec > 0) {
-  //       this.sec--;
-  //       if (this.sec == 0 && this.min > 0) {
-  //         this.sec = 60;
-  //         this.min--;
-  //       }
-  //       if (this.min == 0 && this.hr > 0) {
-  //         this.sec = 60;
-  //         this.min = 59;
-  //         this.hr--;
-  //       }
-  //       if (this.hr == 0 && this.min == 0 && this.sec == 0) {
-  //         this.submitQuiz();
-  //       }
-  //     }
-  //   }, 1000);
-  // }
+  //set quize timer
   setTimer() {
     this.countDown = timer(0, this.tick).subscribe(() => {
       --this.counter;
-      setInterval(() => {
-        let co = { remainingtime: this.counter };
-        this.service.updatetimer(co).subscribe((res: any) => {
-          console.log(res);
-        });
-      }, 5000);
+      if (this.counter == 0) {
+        alert(this.counter);
+        this.submitQuiz();
+      }
+      this.updateinterval = setInterval(() => {
+        let co = {
+          remainingtime: this.counter,
+          quizeId: this.qid,
+          userId: this.uid,
+        };
+        this.service.updatetimer(co).subscribe((res: any) => {});
+      }, 30000);
     });
   }
+
+  //show quiz list
   quizlist() {
-    alert('dd');
     if (this.mydata.length == 0) {
       this.service.getTimer(this.qid).subscribe((res: any) => {
         this.counter = res.time;
@@ -156,22 +119,6 @@ export class McqComponent implements OnInit {
       this.counter = this.mydata[this.mydata.length - 1].remainingtime;
       this.setTimer();
     }
-    //state service
-    // this.service.getStatusList(this.uid, this.qid).subscribe((res: any) => {
-    //   this.mydata = res;
-    //   console.log(this.mydata, 'This is status');
-    //   for (let i = 0; i < this.mydata.length; i++) {
-    //     console.log(this.remainingTime);
-    //     if (this.mydata[i].userans == this.mydata[i].userqu.answer) {
-    //       this.score += 1;
-    //       console.log('myscore', this.score);
-    //     } else {
-    //       this.score = this.score;
-    //     }
-    //   }
-    //   // this.timer=this.mydata[this.mydata.length-1].remainingtime;
-    //   // this.setTimer(this.timer);
-    // });
 
     this.service.getallquestions(this.qid).subscribe((res: any) => {
       this.que = res;
@@ -181,13 +128,21 @@ export class McqComponent implements OnInit {
 
       for (let i: any = 0; i < this.que.length; i++) {
         this.ques[i] = { ...this.que[i], disable: false };
-        if (this.mydata.length != 0) {
-          //   console.log('inside if', this.timer);
+        // this.ques[i] = {
+        //   ...this.que[i],
+        //   disable: false,
+        //   userSelected: false,
+        //   selectedOption: null,
+        //   wrong1: false,
+        //   wrong2: false,
+        //   wrong3: false,
+        //   wrong4: false,
+        // };
 
-          //this.setTimer(this.timer);
+        console.log(this.que[i]);
+        if (this.mydata.length != 0) {
           for (let j: any = 0; j < this.mydata.length; j++) {
             if (this.que[i].id == this.mydata[j].questionId) {
-              // console.log("if ",this.ques[ele]);
               this.ques[i] = {
                 ...this.que[i],
                 status: true,
@@ -222,59 +177,72 @@ export class McqComponent implements OnInit {
     i: any
   ) {
     this.ques[i] = { ...this.que[i], disable: true };
-
-    // this.qidid = questionid;
-    // let quizId = this.qid.toString();
-    // option == ans ? (this.score += 1) : this.score;
-    // console.log(
-    //   <HTMLInputElement>document.getElementById(quizId + this.qidid + '1')
-    // );
-    // (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '1')
-    // )).disabled = true;
-    // (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '2')
-    // )).disabled = true;
-    // (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '3')
-    // )).disabled = true;
-    // (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '4')
-    // )).disabled = true;
-
-    // var opt1 = (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '11')
-    // )).innerText;
-    // var opt2 = (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '22')
-    // )).innerText;
-    // var opt3 = (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '33')
-    // )).innerText;
-    // var opt4 = (<HTMLInputElement>(
-    //   document.getElementById(quizId + this.qidid + '44')
-    // )).innerText;
-
-    // if (opt1 == ans) {
-    //   (<HTMLInputElement>(
-    //     document.getElementById(quizId + this.qidid + '11')
-    //   )).classList.add('correct');
-    // } else if (opt2 == ans) {
-    //   (<HTMLInputElement>(
-    //     document.getElementById(quizId + this.qidid + '22')
-    //   )).classList.add('correct');
-    // } else if (opt3 == ans) {
-    //   (<HTMLInputElement>(
-    //     document.getElementById(quizId + this.qidid + '33')
-    //   )).classList.add('correct');
-    // } else if (opt4 == ans) {
-    //   (<HTMLInputElement>(
-    //     document.getElementById(quizId + this.qidid + '44')
-    //   )).classList.add('correct');
+    // this.ques[i] = {
+    //   ...this.que[i],
+    //   disable: true,
+    //   userSelected: true,
+    //   selectedOption: option,
+    //   wrong1: false,
+    //   wrong2: false,
+    //   wrong3: false,
+    //   wrong4: false,
+    // };
+    // let options = [
+    //   question.option1,
+    //   question.option2,
+    //   question.option3,
+    //   question.option4,
+    // ];
+    // let index = options.indexOf(option);
+    // console.log(index);
+    // if (index == 0 && option != ans) {
+    //   this.ques[i] = {
+    //     ...this.que[i],
+    //     disable: true,
+    //     userSelected: true,
+    //     selectedOption: option,
+    //     wrong1: true,
+    //     wrong2: false,
+    //     wrong3: false,
+    //     wrong4: false,
+    //   };
+    // } else if (index == 1 && option != ans) {
+    //   this.ques[i] = {
+    //     ...this.que[i],
+    //     disable: true,
+    //     userSelected: true,
+    //     selectedOption: option,
+    //     wrong1: false,
+    //     wrong2: true,
+    //     wrong3: false,
+    //     wrong4: false,
+    //   };
+    // } else if (index == 2 && option != ans) {
+    //   this.ques[i] = {
+    //     ...this.que[i],
+    //     disable: true,
+    //     userSelected: true,
+    //     selectedOption: option,
+    //     wrong1: false,
+    //     wrong2: false,
+    //     wrong3: true,
+    //     wrong4: false,
+    //   };
+    // } else if (index == 3 && option != ans) {
+    //   this.ques[i] = {
+    //     ...this.que[i],
+    //     disable: true,
+    //     userSelected: true,
+    //     selectedOption: option,
+    //     wrong1: false,
+    //     wrong2: false,
+    //     wrong3: false,
+    //     wrong4: true,
+    //   };
     // }
-    // let time = this.hr + ':' + this.min + ':' + this.sec;
 
-    this.correctans = true;
+    option == ans ? (this.score += 1) : this.score;
+
     let status = {
       quizeId: this.qid,
       userId: this.uid,
@@ -283,7 +251,6 @@ export class McqComponent implements OnInit {
       questionId: questionid,
       remainingtime: this.counter,
     };
-    //console.log('timer' + time);
 
     this.service.insertstatus(status).subscribe((res: any) => {
       console.log(res);
@@ -291,11 +258,10 @@ export class McqComponent implements OnInit {
   }
 
   //descriptive question
-  onblurdesc(questionid: number, questionanswer: string, event: any,i:any) {
+  onblurdesc(questionid: number, questionanswer: string, event: any, i: any) {
     this.ques[i] = { ...this.que[i], disable: true };
     let value = event.target.value;
     console.log(value + 'value by text');
-    // let time = this.hr + ':' + this.min + ':' + this.sec;
 
     let status = {
       quizeId: this.qid,
@@ -313,8 +279,14 @@ export class McqComponent implements OnInit {
 
   //submit quiz and timer off
   submitQuiz() {
+    this.countDown.unsubscribe();
+    clearInterval(this.updateinterval);
+
     console.log(this.score);
-    clearInterval(this.counter);
+    let scoreData = {
+      email: this.userMail,
+      score: this.score,
+    };
     let score = {
       score: this.score,
       quizeId: this.qid,
@@ -323,15 +295,14 @@ export class McqComponent implements OnInit {
     this.service.saveScore(score).subscribe((res: any) => {
       console.log(res);
     });
-    let delstatus={
-      userId:this.uid,
-      quizeId: this.qid
-    }
-    this.service.clearstatus(delstatus).subscribe((res: any) => {
+
+    this.service.clearstatus(this.qid, this.uid).subscribe((res: any) => {
       console.log(res);
     });
-
-    //this.router.navigate(['/fav']);
+    this.service.sendmail(scoreData).subscribe((res: any) => {
+      console.log(res);
+    });
+    this.router.navigate(['/fav']);
   }
 }
 @Pipe({

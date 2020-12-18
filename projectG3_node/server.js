@@ -30,6 +30,7 @@ require("./app/routes/score.routes")(app);
 require("./app/routes/quize.routes")(app);
 require("./app/routes/chart.routes")(app);
 require("./app/routes/timer.routes")(app);
+require("./app/routes/maiulsender.route")(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

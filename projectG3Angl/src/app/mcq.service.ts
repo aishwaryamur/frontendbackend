@@ -5,8 +5,12 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class McqService {
-  clearstatus(delstatus: any) {
-    return this.http.delete('http://localhost:8080/api/status', delstatus);
+  clearstatus(qid: any, uid: any) {
+    //  console.log(delstatus);
+
+    return this.http.delete(
+      'http://localhost:8080/api/status/' + qid + '/' + uid
+    );
   }
   constructor(private http: HttpClient) {}
   getScore(qid: number) {
@@ -30,5 +34,10 @@ export class McqService {
   }
   updatetimer(counter: any) {
     return this.http.put('http://localhost:8080/api/status', counter);
+  }
+  sendmail(scoreData: any) {
+    console.log(scoreData);
+
+    return this.http.post('http://localhost:8080/api/mailsend', scoreData);
   }
 }

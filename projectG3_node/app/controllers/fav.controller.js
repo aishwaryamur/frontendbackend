@@ -27,11 +27,12 @@ exports.findOne= (req, res) => {
 exports.update = (req, res) => {
     const id = req.params.id;
     const updateedStatus=req.body.status;
+const userid=req.body.userId;
 
 console.log(updateedStatus);
     Tutorial.update( 
         { status: updateedStatus },
-        { where: { id: id } }
+        { where: { quizeId: id,userId:userid } }
       ).then(function(rowsUpdated) {
         res.send(rowsUpdated)
       })
@@ -113,7 +114,7 @@ exports.findAll=(req,res) => {
     console.log("ds");
     return Tutorial.findAll({
       include: ["quizs"],
-      where: {userid:id,status:true}
+      where: {userId:id,status:true}
     } ).then(data => {
         res.send(data);
         console.log(data);
